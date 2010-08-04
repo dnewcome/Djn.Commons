@@ -28,15 +28,15 @@ namespace Djn.Framework
 			return Deserialize( typeof( T ), in_stream );
 		}
 
-		public static void SerializeToDisk( Type in_type, object in_data, string in_filename ) {
+		public static void SerializeToDisk<T>( object in_data, string in_filename ) {
 			FileStream fs = new FileStream( in_filename, FileMode.Create, FileAccess.Write );
-			Serializer.Serialize( in_type, in_data, fs );
+			Serializer.Serialize( typeof( T ), in_data, fs );
 			fs.Close();
 		}
 
-		public static T DeserializeFromDisk<T>( Type in_type, string in_filename ) {
+		public static T DeserializeFromDisk<T>( string in_filename ) {
 			FileStream fs = new FileStream( in_filename, FileMode.Open, FileAccess.Read );
-			T data = ( T )Serializer.Deserialize( in_type, fs );
+			T data = ( T )Serializer.Deserialize<T>( fs );
 			fs.Close();
 			return data;
 		}
