@@ -24,8 +24,8 @@ namespace Djn.Framework
 			return xser.Deserialize( in_stream );
 		}
 
-		public static object Deserialize<T>( Stream in_stream ) {
-			return Deserialize( typeof( T ), in_stream );
+		public static T Deserialize<T>( Stream in_stream ) {
+			return ( T )Deserialize( typeof( T ), in_stream );
 		}
 
 		public static void SerializeToDisk<T>( object in_data, string in_filename ) {
