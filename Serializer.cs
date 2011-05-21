@@ -28,7 +28,7 @@ namespace Djn.Framework
 			return ( T )Deserialize( typeof( T ), in_stream );
 		}
 
-		public static void SerializeToDisk<T>( object in_data, string in_filename ) {
+		public static void SerializeToDisk<T>( T in_data, string in_filename ) {
 			FileStream fs = new FileStream( in_filename, FileMode.Create, FileAccess.Write );
 			Serializer.Serialize( typeof( T ), in_data, fs );
 			fs.Close();
