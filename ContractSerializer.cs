@@ -15,8 +15,12 @@ namespace Djn.Framework
 		 * other ser. methods. I don't think they are necessary.
 		 */
 		public static void Serialize<T>( T in_obj, Stream in_stream, DataContractResolver in_resolver ) {
+			Serialize( typeof( T ), in_obj, in_stream, in_resolver );
+		}
+
+		public static void Serialize( Type in_type, object in_obj, Stream in_stream, DataContractResolver in_resolver ) {
 			DataContractSerializer serializer =
-				new DataContractSerializer( typeof( T ), null, int.MaxValue, false, false, null, in_resolver );
+				new DataContractSerializer( in_type, null, int.MaxValue, false, false, null, in_resolver );
 			XmlTextWriter writer = new XmlTextWriter( in_stream, Encoding.UTF8 ) {
 				Formatting = Formatting.Indented
 			};
@@ -25,10 +29,15 @@ namespace Djn.Framework
 		}
 
 		public static T Deserialize<T>( Stream in_stream, DataContractResolver in_resolver ) {
-			System.Runtime.Serialization.DataContractSerializer serializer =
-				new System.Runtime.Serialization.DataContractSerializer( typeof( T ), null, int.MaxValue, false, false, null, in_resolver );
-			return ( T )serializer.ReadObject( in_stream );
+			return ( T )Deserialize( typeof( T ), in_stream, in_resolver );
 		}
+
+		public static object Deserialize( Type in_type, Stream in_stream, DataContractResolver in_resolver ) {
+			System.Runtime.Serialization.DataContractSerializer serializer =
+				new System.Runtime.Serialization.DataContractSerializer( in_type, null, int.MaxValue, false, false, null, in_resolver );
+			return serializer.ReadObject( in_stream );
+		}
+
 		public static T DeserializeFromDisk<T>( string in_filename, DataContractResolver in_resolver ) {
 			FileStream fs = new FileStream( in_filename, FileMode.Open, FileAccess.Read );
 			return Deserialize<T>( fs, in_resolver );
